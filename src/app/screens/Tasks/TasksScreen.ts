@@ -4,12 +4,13 @@ import type { AnimationPlaybackControls } from "motion/react";
 import { Container } from "pixi.js";
 import { Button } from "../../ui/Button";
 import { Tasks } from "./Tasks";
+import { TaskBubble } from "./TaskBubble";
 
 
 export class TasksScreen extends Container {
-    public static assetBundles = ["tasks", "main"];
+    public static assetBundles = ["default", "main"];
 
-    private mainContainer: Container;
+    public mainContainer: Container;
     private saveButton: FancyButton;
     private tasks: Tasks;
 
@@ -18,6 +19,7 @@ export class TasksScreen extends Container {
 
         this.mainContainer = new Container();
         this.addChild(this.mainContainer);
+        this.tasks = new Tasks();
 
         this.saveButton = new Button({
               text: "Save",
@@ -29,7 +31,6 @@ export class TasksScreen extends Container {
         })
         this.addChild(this.saveButton)
 
-        this.tasks = new Tasks();
     }
 
 
@@ -49,6 +50,9 @@ export class TasksScreen extends Container {
     this.mainContainer.y = centerY;
     this.saveButton.x = centerX;
     this.saveButton.y = centerY;
+
+    this.saveButton.x = width - 80;
+    this.saveButton.y = 50;
   }
 
 
@@ -69,7 +73,7 @@ export class TasksScreen extends Container {
         }
         
         await finalPromise;
-        this.tasks.show();
+        this.tasks.show(this);
     }
 
   /** Hide screen with animations */
