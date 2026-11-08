@@ -20,23 +20,10 @@ export class Tasks {
     private yMax = 400;
     private xMax = 400;
 
-    private loadTasks(): Task[] {
-        try {
-            // db fetch to init task array
-        } catch {
-            alert('an error occurred loading tasks')
-        }
-
-        return []
-    }
-
     public addTask(){
-        const xpos = 100;
-        const ypos = 100;
-  
         const taskBubble = new TaskBubble();
         taskBubble.alpha = 0;
-        taskBubble.position.set(xpos, ypos);
+        taskBubble.position.set(taskBubble.x, taskBubble.y);
         animate(taskBubble, { alpha: 1 }, { duration: Tasks.ANIMATION_DURATION });
         this.screen.mainContainer.addChild(taskBubble);
         this.taskBubbleArray.push(taskBubble);
@@ -52,7 +39,9 @@ export class Tasks {
     }
 
     public update(): void {
-
+        this.taskBubbleArray.forEach(tb => {
+            tb.update();
+        })
     }
 
     public resize(w: number, h: number): void {
@@ -60,5 +49,13 @@ export class Tasks {
         this.xMax = w / 2;
         this.yMin = -h / 2;
         this.yMax = h / 2;
-  }
+    }
+
+    public testSwap(): void {
+        console.log('swap')
+        this.taskBubbleArray.forEach(tb => {
+            console.log(400 - tb.xTarget)
+            tb.setTarget(400 - tb.xTarget, tb.yTarget)
+        })
+    }
 }

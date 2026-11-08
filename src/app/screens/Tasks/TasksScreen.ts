@@ -1,7 +1,7 @@
 import { FancyButton } from "@pixi/ui";
 import { animate } from "motion";
 import type { AnimationPlaybackControls } from "motion/react";
-import { Container } from "pixi.js";
+import { Container, Ticker } from "pixi.js";
 import { Button } from "../../ui/Button";
 import { Tasks } from "./Tasks";
 import { TaskBubble } from "./TaskBubble";
@@ -27,7 +27,7 @@ export class TasksScreen extends Container {
               height: 110,
             });
         this.saveButton.onPress.connect(() => {
-            window.alert("Hello")
+            this.tasks.testSwap()
         })
         this.addChild(this.saveButton)
 
@@ -36,7 +36,9 @@ export class TasksScreen extends Container {
 
     public prepare() {}
 
-    public update() {}
+    public update(_time: Ticker) {
+        this.tasks.update();
+    }
 
       /** Fully reset */
     public reset() {}
