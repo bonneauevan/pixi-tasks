@@ -52,9 +52,7 @@ export class Tasks {
     }
 
     public testSwap(): void {
-        console.log('swap')
         this.taskBubbleArray.forEach(tb => {
-            console.log(400 - tb.xTarget)
             tb.setTarget(400 - tb.xTarget, tb.yTarget)
         })
     }

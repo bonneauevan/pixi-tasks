@@ -37,8 +37,6 @@ export class TaskBubble extends Sprite {
     // if not where it needs to be, move it towards target
     if (this.x !== this.xTarget) {
         const xdiff = Math.abs(this.x - this.xTarget);
-        console.log('diff: ', xdiff)
-        console.log('move: ', Math.ceil(xdiff * this.moveSpeed))
         if (this.x > this.xTarget) {
             this.x = this.x - Math.ceil(xdiff * this.moveSpeed);
         } else {
