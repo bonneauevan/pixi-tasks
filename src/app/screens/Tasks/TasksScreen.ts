@@ -4,14 +4,14 @@ import type { AnimationPlaybackControls } from "motion/react";
 import { Container, Ticker } from "pixi.js";
 import { Button } from "../../ui/Button";
 import { Tasks } from "./Tasks";
-import { TaskBubble } from "./TaskBubble";
 
 
 export class TasksScreen extends Container {
     public static assetBundles = ["default", "main"];
 
     public mainContainer: Container;
-    private saveButton: FancyButton;
+    private swapButton: FancyButton;
+    private addButton: FancyButton;
     private tasks: Tasks;
 
     constructor() {
@@ -21,15 +21,25 @@ export class TasksScreen extends Container {
         this.addChild(this.mainContainer);
         this.tasks = new Tasks();
 
-        this.saveButton = new Button({
-              text: "Save",
+        this.swapButton = new Button({
+              text: "Swap",
               width: 175,
               height: 110,
             });
-        this.saveButton.onPress.connect(() => {
+        this.swapButton.onPress.connect(() => {
             this.tasks.testSwap()
         })
-        this.addChild(this.saveButton)
+        this.addChild(this.swapButton)
+
+        this.addButton = new Button({
+              text: "Add",
+              width: 175,
+              height: 110,
+            });
+        this.addButton.onPress.connect(() => {
+            this.tasks.addTask()
+        })
+        this.addChild(this.addButton)
 
     }
 
@@ -50,18 +60,21 @@ export class TasksScreen extends Container {
 
     this.mainContainer.x = centerX;
     this.mainContainer.y = centerY;
-    this.saveButton.x = centerX;
-    this.saveButton.y = centerY;
+    this.swapButton.x = centerX;
+    this.swapButton.y = centerY;
 
-    this.saveButton.x = width - 80;
-    this.saveButton.y = 50;
+    this.swapButton.x = width - 80;
+    this.swapButton.y = 50;
+
+    this.addButton.x = 80;
+    this.addButton.y = 50;
   }
 
 
     public async show(): Promise<void> {
 
         const elementsToAnimate = [
-            this.saveButton,
+            this.swapButton,
         ];
         
         let finalPromise!: AnimationPlaybackControls;

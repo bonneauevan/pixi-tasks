@@ -23,7 +23,7 @@ export class TaskBubble extends Sprite {
   }
 
   public constructor(x: number = 0, y: number = 0) {
-      super({ texture: Texture.from("task.svg"), anchor: 0.5, scale: 1 });
+      super({ texture: Texture.from("task.svg"), anchor: 0.5, scale: 0.5 });
       this.x = this.xTarget = x;
       this.y = this.yTarget = y;
   }

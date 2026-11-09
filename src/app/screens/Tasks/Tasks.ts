@@ -21,9 +21,9 @@ export class Tasks {
     private xMax = 400;
 
     public addTask(){
-        const taskBubble = new TaskBubble();
+        const taskBubble = new TaskBubble(-800, -400 + this.taskBubbleArray.length * 200);
         taskBubble.alpha = 0;
-        taskBubble.position.set(taskBubble.x, taskBubble.y);
+        taskBubble.position.set(taskBubble.x, this.taskCount * 100);
         animate(taskBubble, { alpha: 1 }, { duration: Tasks.ANIMATION_DURATION });
         this.screen.mainContainer.addChild(taskBubble);
         this.taskBubbleArray.push(taskBubble);
