@@ -11,27 +11,26 @@ export class Tasks {
     
     public screen!: TasksScreen;
     
-    private taskArray: Task[] = [new Task("task 1")];
+    private taskArray: Task[] = [];
     private taskBubbleArray: TaskBubble[] = [];
-    private taskCount: number = this.taskArray.length;
 
     private yMin = -400;
     private xMin = -400;
     private yMax = 400;
     private xMax = 400;
 
-    public addTask(){
-        const taskBubble = new TaskBubble(-800, -400 + this.taskBubbleArray.length * 200);
+    public addTask(): void {
+        const taskBubble = new TaskBubble();
         taskBubble.alpha = 0;
-        taskBubble.position.set(taskBubble.x, this.taskCount * 100);
+        taskBubble.position.set(taskBubble.x, taskBubble.y);
         animate(taskBubble, { alpha: 1 }, { duration: Tasks.ANIMATION_DURATION });
         this.screen.mainContainer.addChild(taskBubble);
         this.taskBubbleArray.push(taskBubble);
+        this.updateTargets();
     }
 
     public async show(screen: TasksScreen): Promise<void> {
         this.screen = screen;
-        let n = 0;
         this.taskArray.forEach(async t => {
             this.addTask();
             await waitFor(Tasks.WAIT_DURATION);
@@ -54,6 +53,18 @@ export class Tasks {
     public testSwap(): void {
         this.taskBubbleArray.forEach(tb => {
             tb.setTarget(400 - tb.xTarget, tb.yTarget)
+        })
+    }
+
+    private updateTargets(): void {
+        const numBubbles = this.taskBubbleArray.length;
+        const angle = (2*Math.PI) / numBubbles;
+        let count = 0;
+        this.taskBubbleArray.forEach(tb => {
+            const x_n = Math.cos(angle * count);
+            const y_n = Math.sin(angle * count);
+            tb.setTarget(this.xMin * x_n, this.yMin * y_n)
+            count++;
         })
     }
 }
