@@ -1,8 +1,10 @@
 import { Sprite, Texture } from "pixi.js";
+import { Task } from "./Task";
 
 export class TaskBubble extends Sprite {
   public xTarget: number;
   public yTarget: number;
+  public task: Task;
 
   private moveSpeed: number = 0.1;
 
@@ -22,8 +24,9 @@ export class TaskBubble extends Sprite {
     return this.height * 0.5;
   }
 
-  public constructor(x: number = 0, y: number = 0) {
+  public constructor(task: Task, x: number = 0, y: number = 0) {
       super({ texture: Texture.from("task.svg"), anchor: 0.5, scale: 0.5 });
+      this.task = task;
       this.x = this.xTarget = x;
       this.y = this.yTarget = y;
   }

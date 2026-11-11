@@ -19,8 +19,8 @@ export class Tasks {
     private yMax = 400;
     private xMax = 400;
 
-    public addTask(): void {
-        const taskBubble = new TaskBubble();
+    public addTask(task: string): void {
+        const taskBubble = new TaskBubble(new Task(task));
         taskBubble.alpha = 0;
         taskBubble.position.set(taskBubble.x, taskBubble.y);
         animate(taskBubble, { alpha: 1 }, { duration: Tasks.ANIMATION_DURATION });
@@ -32,7 +32,6 @@ export class Tasks {
     public async show(screen: TasksScreen): Promise<void> {
         this.screen = screen;
         this.taskArray.forEach(async t => {
-            this.addTask();
             await waitFor(Tasks.WAIT_DURATION);
         })
     }
@@ -63,7 +62,7 @@ export class Tasks {
         this.taskBubbleArray.forEach(tb => {
             const x_n = Math.cos(angle * count);
             const y_n = Math.sin(angle * count);
-            tb.setTarget(this.xMin * x_n, this.yMin * y_n)
+            tb.setTarget(this.xMax * x_n, this.yMax * y_n)
             count++;
         })
     }
