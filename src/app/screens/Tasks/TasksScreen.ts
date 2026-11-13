@@ -1,4 +1,4 @@
-import { FancyButton, Input } from "@pixi/ui";
+import { FancyButton, Input, Signal } from "@pixi/ui";
 import { animate } from "motion";
 import type { AnimationPlaybackControls } from "motion/react";
 import { Container, Sprite, Ticker } from "pixi.js";
@@ -14,6 +14,7 @@ export class TasksScreen extends Container {
     private addButton: FancyButton;
     private tasks: Tasks;
     private textInput: Input;
+    private textValue: string;
 
     constructor() {
         super();
@@ -38,13 +39,14 @@ export class TasksScreen extends Container {
               height: 110,
             });
         this.addButton.onPress.connect(() => {
-            this.tasks.addTask("test")
+            this.tasks.addTask(this.textValue)
         })
         this.addChild(this.addButton)
 
         this.textInput = new Input({
           bg: Sprite.from('input.svg'),
           placeholder: 'Enter text',
+          scale: 0.5,
           padding: {
             top: 11,
             right: 11,
@@ -52,7 +54,10 @@ export class TasksScreen extends Container {
             left: 11
           },
         });
+        this.textInput.onChange.connect((v: string) => this.textValue = v)
         this.addChild(this.textInput);
+
+        this.textValue = '';
     }
 
 
