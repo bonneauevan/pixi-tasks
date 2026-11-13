@@ -37,7 +37,7 @@ export class TasksScreen extends Container {
               height: 110,
             });
         this.addButton.onPress.connect(() => {
-            this.tasks.addTask()
+            this.tasks.addTask("test")
         })
         this.addChild(this.addButton)
 

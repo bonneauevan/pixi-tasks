@@ -1,10 +1,11 @@
-import { Sprite, Texture } from "pixi.js";
+import { Sprite, Text, Texture } from "pixi.js";
 import { Task } from "./Task";
 
 export class TaskBubble extends Sprite {
   public xTarget: number;
   public yTarget: number;
   public task: Task;
+  private text: Text
 
   private moveSpeed: number = 0.1;
 
@@ -29,6 +30,16 @@ export class TaskBubble extends Sprite {
       this.task = task;
       this.x = this.xTarget = x;
       this.y = this.yTarget = y;
+      this.text = new Text({
+        text: this.task.getTask(),
+        style: {
+            fontFamily: 'Arial',
+            fontSize: 16,
+            fill: 0xffffff, // White color
+            align: 'center'
+        }
+      });
+      this.addChild(this.text);
   }
 
   public setTarget(x: number, y: number) {
