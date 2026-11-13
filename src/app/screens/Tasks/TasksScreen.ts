@@ -1,7 +1,7 @@
-import { FancyButton } from "@pixi/ui";
+import { FancyButton, Input } from "@pixi/ui";
 import { animate } from "motion";
 import type { AnimationPlaybackControls } from "motion/react";
-import { Container, Ticker } from "pixi.js";
+import { Container, Sprite, Ticker } from "pixi.js";
 import { Button } from "../../ui/Button";
 import { Tasks } from "./Tasks";
 
@@ -13,6 +13,7 @@ export class TasksScreen extends Container {
     private swapButton: FancyButton;
     private addButton: FancyButton;
     private tasks: Tasks;
+    private textInput: Input;
 
     constructor() {
         super();
@@ -41,6 +42,17 @@ export class TasksScreen extends Container {
         })
         this.addChild(this.addButton)
 
+        this.textInput = new Input({
+          bg: Sprite.from('input.svg'),
+          placeholder: 'Enter text',
+          padding: {
+            top: 11,
+            right: 11,
+            bottom: 11,
+            left: 11
+          },
+        });
+        this.addChild(this.textInput);
     }
 
 
@@ -63,11 +75,14 @@ export class TasksScreen extends Container {
     this.swapButton.x = centerX;
     this.swapButton.y = centerY;
 
-    this.swapButton.x = width - 80;
-    this.swapButton.y = 50;
+    this.swapButton.x = width - this.swapButton.width/2;
+    this.swapButton.y = this.swapButton.height/2;
 
-    this.addButton.x = 80;
-    this.addButton.y = 50;
+    this.addButton.x = this.addButton.width/2;
+    this.addButton.y = this.addButton.height/2;
+
+    this.textInput.x = width/2 - this.textInput.width/2;
+    this.textInput.y = this.textInput.height/2;
   }
 
 
