@@ -30,6 +30,7 @@ export class TaskBubble extends Sprite {
       this.task = task;
       this.x = this.xTarget = x;
       this.y = this.yTarget = y;
+      this.eventMode = 'static';
       this.text = new Text({
         text: this.task.getTask(),
         style: {
@@ -40,6 +41,17 @@ export class TaskBubble extends Sprite {
         }
       });
       this.addChild(this.text);
+      this.on('pointerenter', () => {
+        this.scale.set(0.55);
+      });
+      this.on('pointerleave', () => {
+        this.scale.set(0.5);
+      });
+      this.on('pointertap', () => {
+        this.scale.set(0.75);
+        this.texture = Texture.from('task_highlight.svg');
+        this.setTarget(0,0)
+      });
   }
 
   public setTarget(x: number, y: number) {
