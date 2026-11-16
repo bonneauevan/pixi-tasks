@@ -20,13 +20,14 @@ export class Tasks {
     private xMax = 400;
 
     public addTask(task: string): void {
-        const taskBubble = new TaskBubble(new Task(task));
+        const taskBubble = new TaskBubble(new Task(task), this.screen);
         taskBubble.alpha = 0;
         taskBubble.position.set(taskBubble.x, taskBubble.y);
         animate(taskBubble, { alpha: 1 }, { duration: Tasks.ANIMATION_DURATION });
         this.screen.mainContainer.addChild(taskBubble);
         this.taskBubbleArray.push(taskBubble);
         this.updateTargets();
+        this.screen.updateTasks();
     }
 
     public async show(screen: TasksScreen): Promise<void> {
@@ -40,6 +41,7 @@ export class Tasks {
         this.taskBubbleArray.forEach(tb => {
             tb.update();
         })
+        this.screen.setSelectedTargets(0,0);
     }
 
     public resize(w: number, h: number): void {
@@ -55,7 +57,7 @@ export class Tasks {
         })
     }
 
-    private updateTargets(): void {
+    public updateTargets(): void {
         const numBubbles = this.taskBubbleArray.length;
         const angle = (2*Math.PI) / numBubbles;
         let count = 0;
@@ -65,5 +67,6 @@ export class Tasks {
             tb.setTarget(this.xMax * x_n, this.yMax * y_n)
             count++;
         })
+        this.screen.setSelectedTargets(0,0)
     }
 }

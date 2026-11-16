@@ -4,6 +4,7 @@ import type { AnimationPlaybackControls } from "motion/react";
 import { Container, Sprite, Ticker } from "pixi.js";
 import { Button } from "../../ui/Button";
 import { Tasks } from "./Tasks";
+import { TaskBubble } from "./TaskBubble";
 
 
 export class TasksScreen extends Container {
@@ -14,13 +15,16 @@ export class TasksScreen extends Container {
     private addButton: FancyButton;
     private tasks: Tasks;
     private textInput: Input;
+    private selected: TaskBubble | null = null;
 
     constructor() {
         super();
 
         this.mainContainer = new Container();
+        this.mainContainer.on('pointertap', () => this.selected = null);
         this.addChild(this.mainContainer);
         this.tasks = new Tasks();
+        this.tasks.screen = this;
 
         this.swapButton = new Button({
               text: "Swap",
@@ -116,4 +120,19 @@ export class TasksScreen extends Container {
   /** Auto pause the app when window go out of focus */
   public blur() {}
 
+  public updateTasks(): void {
+    this.tasks.updateTargets();
+  }
+
+  public hasSelected(): boolean {
+    return !!this.selected;
+  }
+
+  public setSelected(task: TaskBubble | null): void {
+    this.selected = task;
+  }
+
+  public setSelectedTargets(x: number, y: number): void {
+    this.selected?.setTarget(x, y);
+  }
 }
