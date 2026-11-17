@@ -43,7 +43,8 @@ export class TasksScreen extends Container {
             });
         this.addButton.onPress.connect(() => {
             if (this.textInput.value !== '') {
-              this.tasks.addTask(this.textInput.value)
+              const selectedID = this.selected?.getId();
+              this.tasks.addTask(this.textInput.value, selectedID ? selectedID : 0);
               this.textInput.value = '';
             }
         })

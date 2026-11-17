@@ -5,7 +5,7 @@ import { TasksScreen } from "./TasksScreen";
 export class TaskBubble extends Sprite {
   public xTarget: number;
   public yTarget: number;
-  public task: Task;
+  private task: Task;
   private text: Text;
   private screen: TasksScreen;
 
@@ -79,5 +79,9 @@ export class TaskBubble extends Sprite {
             this.y = this.y + Math.ceil(ydiff * this.moveSpeed);
         }
     }
+  }
+
+  public getId(): number {
+    return this.task.getID()
   }
 }

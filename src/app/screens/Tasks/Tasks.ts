@@ -19,15 +19,20 @@ export class Tasks {
     private yMax = 400;
     private xMax = 400;
 
-    public addTask(task: string): void {
-        const taskBubble = new TaskBubble(new Task(task), this.screen);
+    public addTask(task: string, parentId: number = 0): void {
+        const newTask = new Task(task, parentId);
+        const taskBubble = new TaskBubble(newTask, this.screen);
         taskBubble.alpha = 0;
         taskBubble.position.set(taskBubble.x, taskBubble.y);
         animate(taskBubble, { alpha: 1 }, { duration: Tasks.ANIMATION_DURATION });
         this.screen.mainContainer.addChild(taskBubble);
         this.taskBubbleArray.push(taskBubble);
+        this.taskArray.push(newTask);
         this.updateTargets();
         this.screen.updateTasks();
+        if (parentId) {
+            this.taskArray.find((t) => t.getID() === parentId)?.addChild(newTask);
+        }
     }
 
     public async show(screen: TasksScreen): Promise<void> {

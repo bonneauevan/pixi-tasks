@@ -5,12 +5,12 @@ export class Task {
     private parent: number;
     private complete: boolean;
 
-    constructor(task: string){
-        this.id = 0; // set with return from database on save?
+    constructor(task: string, parentId: number = 0){
+        this.id = Math.floor(Math.random() * (100 - 1)) + 1; // update from zero when saving maybe?
         this.task = task;
         this.children = [];
         this.complete = false;
-        this.parent = 0;
+        this.parent = parentId;
     }
 
     public getID(): number {
@@ -37,8 +37,8 @@ export class Task {
         this.task = task;
     }
 
-    public addChild(task: string): void {
-        this.children.push(new Task(task))
+    public addChild(task: Task): void {
+        this.children.push(task);
     }
 
     public delete(): number {
