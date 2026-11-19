@@ -4,8 +4,7 @@ import type { AnimationPlaybackControls } from "motion/react";
 import { Container, Sprite, Ticker } from "pixi.js";
 import { Button } from "../../ui/Button";
 import { Tasks } from "./Tasks";
-import { TaskBubble } from "./TaskBubble";
-
+import { Task } from "./Task";
 
 export class TasksScreen extends Container {
     public static assetBundles = ["default", "main"];
@@ -15,7 +14,7 @@ export class TasksScreen extends Container {
     private addButton: FancyButton;
     private tasks: Tasks;
     private textInput: Input;
-    private selected: TaskBubble | null = null;
+    private selected: Task | null = null;
 
     constructor() {
         super();
@@ -43,7 +42,7 @@ export class TasksScreen extends Container {
             });
         this.addButton.onPress.connect(() => {
             if (this.textInput.value !== '') {
-              const selectedID = this.selected?.getId();
+              const selectedID = this.selected?.getID();
               this.tasks.addTask(this.textInput.value, selectedID ? selectedID : 0);
               this.textInput.value = '';
             }
@@ -129,7 +128,7 @@ export class TasksScreen extends Container {
     return !!this.selected;
   }
 
-  public setSelected(task: TaskBubble | null): void {
+  public setSelected(task: Task | null): void {
     this.selected = task;
   }
 

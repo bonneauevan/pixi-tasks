@@ -1,7 +1,6 @@
 
 import { animate } from "motion";
 import { Task } from "./Task";
-import { TaskBubble } from "./TaskBubble";
 import { TasksScreen } from "./TasksScreen";
 import { waitFor } from "../../../engine/utils/waitFor";
 
@@ -11,8 +10,8 @@ export class Tasks {
     
     public screen!: TasksScreen;
     
-    private taskArray: Task[] = [];
-    private taskBubbleArray: TaskBubble[] = [];
+    private parentTaskArray: Task[] = [];
+    private allTaskArray: Task[] = [];
 
     private yMin = -400;
     private xMin = -400;
@@ -20,30 +19,30 @@ export class Tasks {
     private xMax = 400;
 
     public addTask(task: string, parentId: number = 0): void {
-        const newTask = new Task(task, parentId);
-        const taskBubble = new TaskBubble(newTask, this.screen);
-        taskBubble.alpha = 0;
-        taskBubble.position.set(taskBubble.x, taskBubble.y);
-        animate(taskBubble, { alpha: 1 }, { duration: Tasks.ANIMATION_DURATION });
-        this.screen.mainContainer.addChild(taskBubble);
-        this.taskBubbleArray.push(taskBubble);
-        this.taskArray.push(newTask);
+        const newTask = new Task(task, parentId, this.screen);
+        newTask.alpha = 0;
+        newTask.position.set(newTask.x, newTask.y);
+        animate(newTask, { alpha: 1 }, { duration: Tasks.ANIMATION_DURATION });
+        this.screen.mainContainer.addChild(newTask);
+        this.allTaskArray.push(newTask);
         this.updateTargets();
         this.screen.updateTasks();
         if (parentId) {
-            this.taskArray.find((t) => t.getID() === parentId)?.addChild(newTask);
+            this.parentTaskArray.find((t) => t.getID() === parentId)?.addChild(newTask);
+        } else {
+            this.parentTaskArray.push(newTask);
         }
     }
 
     public async show(screen: TasksScreen): Promise<void> {
         this.screen = screen;
-        this.taskArray.forEach(async t => {
+        this.parentTaskArray.forEach(async t => {
             await waitFor(Tasks.WAIT_DURATION);
         })
     }
 
     public update(): void {
-        this.taskBubbleArray.forEach(tb => {
+        this.allTaskArray.forEach(tb => {
             tb.update();
         })
         this.screen.setSelectedTargets(0,0);
@@ -57,16 +56,16 @@ export class Tasks {
     }
 
     public testSwap(): void {
-        this.taskBubbleArray.forEach(tb => {
+        this.allTaskArray.forEach(tb => {
             tb.setTarget(400 - tb.xTarget, tb.yTarget)
         })
     }
 
     public updateTargets(): void {
-        const numBubbles = this.taskBubbleArray.length;
+        const numBubbles = this.allTaskArray.length;
         const angle = (2*Math.PI) / numBubbles;
         let count = 0;
-        this.taskBubbleArray.forEach(tb => {
+        this.allTaskArray.forEach(tb => {
             const x_n = Math.cos(angle * count);
             const y_n = Math.sin(angle * count);
             tb.setTarget(this.xMax * x_n, this.yMax * y_n)
