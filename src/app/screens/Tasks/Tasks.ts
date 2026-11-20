@@ -28,7 +28,7 @@ export class Tasks {
         this.updateTargets();
         this.screen.updateTasks();
         if (parentId) {
-            this.parentTaskArray.find((t) => t.getID() === parentId)?.addChild(newTask);
+            this.parentTaskArray.find((t) => t.getID() === parentId)?.addChildTask(newTask);
         } else {
             this.parentTaskArray.push(newTask);
         }
